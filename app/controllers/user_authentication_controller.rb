@@ -18,7 +18,8 @@ class UserAuthenticationController < ApplicationController
         redirect_to("/user_sign_in", { :alert => "Incorrect password." })
       else
         session[:user_id] = user.id
-      
+       #this is the method we used initially to add a key value pair to a hash - session.store(:user_id, user.id)
+
         redirect_to("/", { :notice => "Signed in successfully." })
       end
     else
