@@ -44,7 +44,13 @@
           Director
         </label>
 
-        <input type="text" id="director_id_box" name="query_director_id">
+<select name="query_director_id" id="director_id_box" >
+  <% Director.all.order(:name).each do |a_director| %>
+    <option value="<% a_director.id %>">
+    <%= a_director.name %></option>
+  <%end%>
+</select>
+
       </div>
 
       <div>

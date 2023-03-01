@@ -1,4 +1,27 @@
 class BookmarksController < ApplicationController
+  
+  def create_from_movie
+    b=Bookmark.new
+    b.movie_id = params.fetch("movie_id")
+    b.user_id = params.fetch("user_id")
+    b.save
+
+    redirect_to("/movies/#[b.movie_id]", { :notice => "Bookmarked!" })
+  end
+
+  def create
+    the_bookmark = Bookmark.new
+    the_bookmark.user_id = params.fetch("query_user_id")
+    the_bookmark.movie_id = params.fetch("query_movie_id")
+
+    if the_bookmark.valid?
+      the_bookmark.save
+      redirect_to("/bookmarks", { :notice => "Bookmark created successfully." })
+    else
+      redirect_to("/bookmarks", { :alert => the_bookmark.errors.full_messages.to_sentence })
+    end
+  end
+
   def index
     matching_bookmarks = Bookmark.all
 
@@ -17,18 +40,6 @@ class BookmarksController < ApplicationController
     render({ :template => "bookmarks/show.html.erb" })
   end
 
-  def create
-    the_bookmark = Bookmark.new
-    the_bookmark.user_id = params.fetch("query_user_id")
-    the_bookmark.movie_id = params.fetch("query_movie_id")
-
-    if the_bookmark.valid?
-      the_bookmark.save
-      redirect_to("/bookmarks", { :notice => "Bookmark created successfully." })
-    else
-      redirect_to("/bookmarks", { :alert => the_bookmark.errors.full_messages.to_sentence })
-    end
-  end
 
   def update
     the_id = params.fetch("path_id")
